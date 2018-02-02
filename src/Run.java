@@ -1,13 +1,14 @@
 /**
-* 
+* Main class to run used to intiate the program
 */
 public class Run
 {
 	/**
-	* 
+	* Main method that starts subsequent processes
 	*/
 	public static void main(String [] args)
 	{
-		System.out.println("Program running...");
+		// Creates GUI
+		new GUI();
 	}
 }
