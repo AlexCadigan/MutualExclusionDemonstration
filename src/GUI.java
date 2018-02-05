@@ -1,109 +1,122 @@
-import java.awt.BorderLayout;
-
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-
-import javax.swing.BoxLayout;
-import javax.swing.JButton;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
+import javafx.application.Application;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
+import javafx.scene.Scene;
+import javafx.stage.Stage;
 import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-import javax.swing.JTextField;
 
-/**
-* This class controls the GUI
+/*
+* Contains code to construct a GUI that allows users to initiate the simulation
 */
-public class GUI
+public class GUI extends Application
 {
-	// Constructors:
-
-	/**
-	* GUI constructor
+	/*
+	* Main method that begins the creation of the GUI
 	*/
-	public GUI()
+	public static void main(String [] args)
 	{
-		// Initializes GUI window
-		JFrame GUIFrame = new JFrame();
-		GUIFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		GUIFrame.setTitle("Mutual Exclusion Demonstration");
-		GUIFrame.setSize(500, 400);
-		GUIFrame.setLocationRelativeTo(null);
-
-		// The speed of each ball
-		JPanel ballSpeeds = new JPanel();
-		ballSpeeds.setLayout(new BoxLayout(ballSpeeds, BoxLayout.Y_AXIS));
-		JPanel ball1Speed = new JPanel();
-		ball1Speed.add(new JLabel("Ball 1 Speed:"));
-		JTextField txtBall1Speed = new JTextField("10", 5);
-		ball1Speed.add(txtBall1Speed);
-		ballSpeeds.add(ball1Speed);
-		JPanel ball2Speed = new JPanel();
-		ball2Speed.add(new JLabel("Ball 2 Speed:"));
-		JTextField txtBall2Speed = new JTextField("10", 5);
-		ball2Speed.add(txtBall2Speed);
-		ballSpeeds.add(ball2Speed);
-		JPanel ball3Speed = new JPanel();
-		ball3Speed.add(new JLabel("Ball 3 Speed:"));
-		JTextField txtBall3Speed = new JTextField("10", 5);
-		ball3Speed.add(txtBall3Speed);
-		ballSpeeds.add(ball3Speed);
-		JPanel ball4Speed = new JPanel();
-		ball4Speed.add(new JLabel("Ball 4 Speed:"));
-		JTextField txtBall4Speed = new JTextField("10", 5);
-		ball4Speed.add(txtBall4Speed);
-		ballSpeeds.add(ball4Speed);
-
-		// Start simulation button
-		JButton btnStart = new JButton("Start");
-		btnStart.addActionListener(new ActionListener()
-		{
-			public void actionPerformed(ActionEvent event)
-			{
-				collectUserInput(GUIFrame, new JTextField [] {txtBall1Speed, txtBall2Speed, txtBall3Speed, txtBall4Speed});
-			}
-		});
-
-		GUIFrame.add(ballSpeeds);
-		GUIFrame.add(btnStart, BorderLayout.SOUTH);
-		GUIFrame.setVisible(true);
+		Application.launch(args);
 	}
 
-	// Methods:
-
-	/**
-	* Gets the input entered by the user
+	/*
+	* Creates GUI page for users to enter ball speeds
 	*/
-	private void collectUserInput(JFrame GUI, JTextField [] ballSpeedHolders)
+	@Override
+	public void start(Stage stage) 
 	{
-		// Makes sure user input is valid
-		try
-		{
-			double [] ballSpeeds = new double [4];
+		stage.setTitle("Mutual Exclusion Demonstration");
 
-			for (int index = 0; index < ballSpeedHolders.length; index ++)
+		// Object speed labels
+		Label lblCircle = new Label("Circle Speed:");
+		TextField txtCircle = new TextField("10");
+		HBox label1 = new HBox(10);
+		label1.setAlignment(Pos.CENTER);
+		label1.getChildren().addAll(lblCircle, txtCircle);
+
+		Label lblTriangle = new Label("Triangle Speed:");
+		TextField txtTriangle = new TextField("10");
+		HBox label2 = new HBox(10);
+		label2.setAlignment(Pos.CENTER);
+		label2.getChildren().addAll(lblTriangle, txtTriangle);
+
+		Label lblSquare = new Label("Square Speed:");
+		TextField txtSquare = new TextField("10");
+		HBox label3 = new HBox(10);
+		label3.setAlignment(Pos.CENTER);
+		label3.getChildren().addAll(lblSquare, txtSquare);
+
+		Label lblRhombus = new Label("Rhombus Speed:");
+		TextField txtRhombus = new TextField("10");
+		HBox label4 = new HBox(10);
+		label4.setAlignment(Pos.CENTER);
+		label4.getChildren().addAll(lblRhombus, txtRhombus);
+
+		// Start button
+		Button btnStart = new Button("Start Simulation");
+		btnStart.setOnAction(new startButtonListener(stage, new TextField [] {txtCircle, txtTriangle, txtSquare, txtRhombus}));
+		HBox button = new HBox(10);
+		button.setAlignment(Pos.CENTER);
+		button.getChildren().addAll(btnStart);
+
+		// Displays the GUI
+		VBox vbox = new VBox(40);
+		vbox.setPadding(new Insets(30, 30, 30, 30));
+		vbox.getChildren().addAll(label1, label2, label3, label4, button);
+
+		Scene scene = new Scene(vbox, 450, 375);
+		stage.setScene(scene);
+		stage.show();
+	}
+
+	/*
+	* Called on start button press
+	*/
+	private class startButtonListener implements EventHandler <ActionEvent> 
+	{
+		private TextField [] textFields;
+		private Stage stage;
+
+		/*
+		* Class constructor
+		*/
+		private startButtonListener(Stage stage, TextField [] textFields)
+		{
+			this.textFields = textFields;
+			this.stage = stage;
+		}
+
+		/*
+		* Collects speeds of the objects
+		*/
+		@Override
+		public void handle(ActionEvent event) 
+		{
+			double [] objectSpeeds = new double [4];
+
+			for (int index = 0; index < this.textFields.length; index ++)
 			{
-				// Checks if input is negative
-				if (Double.parseDouble(ballSpeedHolders[index].getText()) < 0)
+				try 
 				{
-					ballSpeeds[index] = 1;
+					objectSpeeds[index] = Double.parseDouble(this.textFields[index].getText());
+
+					// If speed is negative
+					if (objectSpeeds[index] < 0)
+					{
+						objectSpeeds[index] = 1;
+					}
 				}
-				// Checks if input is greater than 100 (the cap)
-				else if (Double.parseDouble(ballSpeedHolders[index].getText()) > 100)
+				catch (NumberFormatException exception)
 				{
-					ballSpeeds[index] = 100;
-				}
-				else
-				{
-					ballSpeeds[index] = Double.parseDouble(ballSpeedHolders[index].getText());
+					objectSpeeds[index] = 10;
 				}
 			}
-		}
-		catch (NumberFormatException exception)
-		{
-			JOptionPane.showMessageDialog(null, "Error!  Please enter only numbers for the ball speeds.", "Error Message", 0);
-			new GUI();
-			GUI.dispose();
 		}
 	}
 }
