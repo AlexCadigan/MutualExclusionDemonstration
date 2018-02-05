@@ -1,3 +1,5 @@
+import javafx.animation.Animation;
+import javafx.animation.PathTransition;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -6,11 +8,19 @@ import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.Group;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
 import javafx.scene.Scene;
+import javafx.scene.shape.Circle;
+import javafx.scene.shape.HLineTo;
+import javafx.scene.shape.MoveTo;
+import javafx.scene.shape.Path;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javax.swing.JOptionPane;
+import javafx.util.Duration;
 
 /*
 * Contains code to construct a GUI that allows users to initiate the simulation
@@ -117,6 +127,40 @@ public class GUI extends Application
 					objectSpeeds[index] = 10;
 				}
 			}
+
+			startSimulation();
+		}
+
+		/*
+		* Begins the simulation
+		*/
+		private void startSimulation()
+		{
+			Stage animationStage = new Stage();
+			animationStage.initModality(Modality.APPLICATION_MODAL);
+			animationStage.setTitle("Mutual Exclusion Simulation");
+			animationStage.setResizable(false);
+
+			Group objects = new Group();
+			Circle circle = new Circle(10, Color.RED);
+			objects.getChildren().add(circle);
+
+			Path path = new Path();
+			path.getElements().addAll(new MoveTo(50, 50), new HLineTo(350));
+			path.setFill(null);
+			path.setStroke(Color.BLACK);
+			path.setStrokeWidth(2);
+
+			objects.getChildren().add(path);
+
+			Scene animationScene = new Scene(objects, 400, 100);
+			animationStage.setScene(animationScene);
+			animationStage.show();
+
+			PathTransition pathTrack = new PathTransition(Duration.millis(4000), path, circle);
+			pathTrack.setCycleCount(Animation.INDEFINITE);
+			pathTrack.setAutoReverse(true);
+			pathTrack.play();
 		}
 	}
 }
