@@ -146,14 +146,12 @@ public class MutualExclusionDemonstration extends Application
 			animationStage.initModality(Modality.APPLICATION_MODAL);
 			animationStage.setTitle("Mutual Exclusion Simulation");
 			animationStage.setResizable(false);
-
 			// Creates the moving objects (circle, square, triangle, rhombus)
 			Group objects = new Group();
 			Circle circle = new Circle(10, Color.RED);
-			Rectangle square = new Rectangle(10, 10, Color.BLUE);
+			Rectangle square = new Rectangle(15, 15, Color.BLUE);
 			objects.getChildren().add(circle);
 			objects.getChildren().add(square);
-
 			// Path for circle
 			Path circlePath = new Path();
 			MoveTo circleMoveTo = new MoveTo();
@@ -194,17 +192,41 @@ public class MutualExclusionDemonstration extends Application
 			circlePath.getElements().add(circleLeftLowerLine);
 			objects.getChildren().add(circlePath);
 
-			// Creates the animation
+			// Path for square
+			Path squarePath = new Path();
+			MoveTo squareMoveTo = new MoveTo();
+			squareMoveTo.setX(100.0f);
+			squareMoveTo.setY(100.0f);
+			LineTo squareLeftUpperLine = new LineTo();
+			squareLeftUpperLine.setX(250.0f);
+			squareLeftUpperLine.setY(250.0f);
+			LineTo squareLeftCriticalSection = new LineTo();
+			squareLeftCriticalSection.setX(650.0f);
+			squareLeftCriticalSection.setY(250.0f);
+			LineTo squareRightUpperLine = new LineTo();
+			squareRightUpperLine.setX(800.0f);
+			squareRightUpperLine.setY(100.0f);
+			LineTo squareRightVLine = new LineTo();
+			squareRightVLine.setX(800.0f);
+			squareRightVLine.setY(400.0f);
+			squarePath.getElements().add(squareMoveTo);
+			squarePath.getElements().add(squareLeftUpperLine);
+			squarePath.getElements().add(squareLeftCriticalSection);
+			squarePath.getElements().add(squareRightUpperLine);
+			squarePath.getElements().add(squareRightVLine);
+			objects.getChildren().add(squarePath);
+
+			// Displays the path and objects
 			Scene animationScene = new Scene(objects, 1000, 500);
 			animationStage.setScene(animationScene);
 			animationStage.show();
+			// Starts the animations
 			PathTransition circleTrack = new PathTransition(Duration.millis(objectSpeeds[0] * 1000), circlePath, circle);
 			circleTrack.setCycleCount(Animation.INDEFINITE);
 			circleTrack.play();
-			// PathTransition squareTrack = new PathTransition(Duration.millis(8000), path, square);
-			// squareTrack.setCycleCount(Animation.INDEFINITE);
-			// squareTrack.setAutoReverse(true);
-			// squareTrack.play();
+			PathTransition squareTrack = new PathTransition(Duration.millis(objectSpeeds[2] * 1000), squarePath, square);
+			squareTrack.setCycleCount(Animation.INDEFINITE);
+			squareTrack.play();
 		}
 	}
 }
