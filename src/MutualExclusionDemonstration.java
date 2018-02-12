@@ -13,10 +13,15 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.Scene;
+import javafx.scene.shape.ArcTo;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.HLineTo;
+import javafx.scene.shape.LineTo;
+import javafx.scene.shape.VLineTo;
 import javafx.scene.shape.MoveTo;
 import javafx.scene.shape.Path;
+import javafx.scene.shape.QuadCurveTo;
+import javafx.scene.shape.Rectangle;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javax.swing.JOptionPane;
@@ -25,7 +30,7 @@ import javafx.util.Duration;
 /*
 * Contains code to construct a GUI that allows users to initiate the simulation
 */
-public class GUI extends Application
+public class MutualExclusionDemonstration extends Application
 {
 	/*
 	* Main method that begins the creation of the GUI
@@ -136,27 +141,47 @@ public class GUI extends Application
 		*/
 		private void startSimulation()
 		{
+			// Creates the GUI window
 			Stage animationStage = new Stage();
 			animationStage.initModality(Modality.APPLICATION_MODAL);
 			animationStage.setTitle("Mutual Exclusion Simulation");
 			animationStage.setResizable(false);
 
+			// Creates the moving objects (circle, square, triangle, rhombus)
 			Group objects = new Group();
 			Circle circle = new Circle(10, Color.RED);
+			Rectangle rectangle = new Rectangle(10, 10, Color.BLUE);
 			objects.getChildren().add(circle);
+			objects.getChildren().add(rectangle);
 
+			// Creates path for objects to follow
 			Path path = new Path();
-			path.getElements().addAll(new MoveTo(50, 50), new HLineTo(350));
-			path.setFill(null);
-			path.setStroke(Color.BLACK);
-			path.setStrokeWidth(2);
-
+			MoveTo moveTo = new MoveTo();
+			moveTo.setX(250.0f);
+			moveTo.setY(250.0f);
+			LineTo leftLowerLine = new LineTo();
+			leftLowerLine.setX(100.0f);
+			leftLowerLine.setY(400.0f);
+			LineTo leftVLine = new LineTo();
+			leftVLine.setX(100.0f);
+			leftVLine.setY(100.0f);
+			LineTo leftUpperLine = new LineTo();
+			leftUpperLine.setX(250.0f);
+			leftUpperLine.setY(250.0f);
+			LineTo criticalSection = new LineTo();
+			criticalSection.setX(650.0f);
+			criticalSection.setY(250.0f);
+			path.getElements().add(moveTo);
+			path.getElements().add(leftLowerLine);
+			path.getElements().add(leftVLine);
+			path.getElements().add(leftUpperLine);
+			path.getElements().add(criticalSection);
 			objects.getChildren().add(path);
 
-			Scene animationScene = new Scene(objects, 400, 100);
+			// Creates the animation
+			Scene animationScene = new Scene(objects, 1000, 500);
 			animationStage.setScene(animationScene);
 			animationStage.show();
-
 			PathTransition pathTrack = new PathTransition(Duration.millis(4000), path, circle);
 			pathTrack.setCycleCount(Animation.INDEFINITE);
 			pathTrack.setAutoReverse(true);
