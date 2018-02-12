@@ -133,13 +133,13 @@ public class MutualExclusionDemonstration extends Application
 				}
 			}
 
-			startSimulation();
+			startSimulation(objectSpeeds);
 		}
 
 		/*
 		* Begins the simulation
 		*/
-		private void startSimulation()
+		private void startSimulation(double [] objectSpeeds)
 		{
 			// Creates the GUI window
 			Stage animationStage = new Stage();
@@ -150,42 +150,61 @@ public class MutualExclusionDemonstration extends Application
 			// Creates the moving objects (circle, square, triangle, rhombus)
 			Group objects = new Group();
 			Circle circle = new Circle(10, Color.RED);
-			Rectangle rectangle = new Rectangle(10, 10, Color.BLUE);
+			Rectangle square = new Rectangle(10, 10, Color.BLUE);
 			objects.getChildren().add(circle);
-			objects.getChildren().add(rectangle);
+			objects.getChildren().add(square);
 
-			// Creates path for objects to follow
-			Path path = new Path();
-			MoveTo moveTo = new MoveTo();
-			moveTo.setX(250.0f);
-			moveTo.setY(250.0f);
-			LineTo leftLowerLine = new LineTo();
-			leftLowerLine.setX(100.0f);
-			leftLowerLine.setY(400.0f);
-			LineTo leftVLine = new LineTo();
-			leftVLine.setX(100.0f);
-			leftVLine.setY(100.0f);
-			LineTo leftUpperLine = new LineTo();
-			leftUpperLine.setX(250.0f);
-			leftUpperLine.setY(250.0f);
-			LineTo criticalSection = new LineTo();
-			criticalSection.setX(650.0f);
-			criticalSection.setY(250.0f);
-			path.getElements().add(moveTo);
-			path.getElements().add(leftLowerLine);
-			path.getElements().add(leftVLine);
-			path.getElements().add(leftUpperLine);
-			path.getElements().add(criticalSection);
-			objects.getChildren().add(path);
+			// Path for circle
+			Path circlePath = new Path();
+			MoveTo circleMoveTo = new MoveTo();
+			circleMoveTo.setX(100.0f);
+			circleMoveTo.setY(400.0f);
+			LineTo circleLeftVLine = new LineTo();
+			circleLeftVLine.setX(100.0f);
+			circleLeftVLine.setY(100.0f);
+			LineTo circleLeftUpperLine = new LineTo();
+			circleLeftUpperLine.setX(250.0f);
+			circleLeftUpperLine.setY(250.0f);
+			LineTo circleLeftCriticalSection = new LineTo();
+			circleLeftCriticalSection.setX(650.0f);
+			circleLeftCriticalSection.setY(250.0f);
+			LineTo circleRightUpperLine = new LineTo();
+			circleRightUpperLine.setX(800.0f);
+			circleRightUpperLine.setY(100.0f);
+			LineTo circleRightVLine = new LineTo();
+			circleRightVLine.setX(800.0f);
+			circleRightVLine.setY(400.0f);
+			LineTo circleRightLowerLine = new LineTo();
+			circleRightLowerLine.setX(650.0f);
+			circleRightLowerLine.setY(250.0f);
+			LineTo circleRightCriticalSection = new LineTo();
+			circleRightCriticalSection.setX(250.0f);
+			circleRightCriticalSection.setY(250.0f);
+			LineTo circleLeftLowerLine = new LineTo();
+			circleLeftLowerLine.setX(100.0f);
+			circleLeftLowerLine.setY(400.0f);
+			circlePath.getElements().add(circleMoveTo);
+			circlePath.getElements().add(circleLeftVLine);
+			circlePath.getElements().add(circleLeftUpperLine);
+			circlePath.getElements().add(circleLeftCriticalSection);
+			circlePath.getElements().add(circleRightUpperLine);
+			circlePath.getElements().add(circleRightVLine);
+			circlePath.getElements().add(circleRightLowerLine);
+			circlePath.getElements().add(circleRightCriticalSection);
+			circlePath.getElements().add(circleLeftLowerLine);
+			objects.getChildren().add(circlePath);
 
 			// Creates the animation
 			Scene animationScene = new Scene(objects, 1000, 500);
 			animationStage.setScene(animationScene);
 			animationStage.show();
-			PathTransition pathTrack = new PathTransition(Duration.millis(4000), path, circle);
-			pathTrack.setCycleCount(Animation.INDEFINITE);
-			pathTrack.setAutoReverse(true);
-			pathTrack.play();
+			PathTransition circleTrack = new PathTransition(Duration.millis(objectSpeeds[0] * 1000), circlePath, circle);
+			circleTrack.setCycleCount(Animation.INDEFINITE);
+			circleTrack.play();
+			// PathTransition squareTrack = new PathTransition(Duration.millis(8000), path, square);
+			// squareTrack.setCycleCount(Animation.INDEFINITE);
+			// squareTrack.setAutoReverse(true);
+			// squareTrack.play();
 		}
 	}
 }
