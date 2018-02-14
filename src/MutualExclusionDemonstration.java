@@ -1,3 +1,4 @@
+import java.sql.Timestamp;
 import javafx.animation.Animation;
 import javafx.animation.PathTransition;
 import javafx.application.Application;
@@ -250,14 +251,17 @@ public class MutualExclusionDemonstration extends Application
 			animationStage.show();
 
 			// Creates message queue objects
-			
+			MessageQueue cQueue = new MessageQueue("circle");
+			MessageQueue tQueue = new MessageQueue("triangle");
+			MessageQueue sQueue = new MessageQueue("square");
+			MessageQueue rQueue = new MessageQueue("rhombus");
 
 			// Starts the animations
 			PathTransition cLTTrack = new PathTransition(Duration.millis(objectSpeeds[0] * 1000), cLTriangle, circle);
 			cLTTrack.setOnFinished(new EventHandler <ActionEvent> () {
 				@Override
 				public void handle (ActionEvent event) {
-					requestCriticalSection("circle");
+					requestCriticalSection(cQueue, tQueue, sQueue, rQueue);
 				}
 			});
 			cLTTrack.play();
@@ -265,7 +269,7 @@ public class MutualExclusionDemonstration extends Application
 			tRTTrack.setOnFinished(new EventHandler <ActionEvent> () {
 				@Override
 				public void handle (ActionEvent event) {
-					requestCriticalSection("triangle");
+					requestCriticalSection(tQueue, cQueue, sQueue, rQueue);
 				}
 			});
 			tRTTrack.play();
@@ -273,7 +277,7 @@ public class MutualExclusionDemonstration extends Application
 			sLTTrack.setOnFinished(new EventHandler <ActionEvent> () {
 				@Override
 				public void handle (ActionEvent event) {
-					requestCriticalSection("square");
+					requestCriticalSection(sQueue, cQueue, tQueue, rQueue);
 				}
 			});
 			sLTTrack.play();
@@ -281,15 +285,18 @@ public class MutualExclusionDemonstration extends Application
 			rRTTrack.setOnFinished(new EventHandler <ActionEvent> () {
 				@Override
 				public void handle (ActionEvent event) {
-					requestCriticalSection("rhombus");
+					requestCriticalSection(rQueue, cQueue, tQueue, sQueue);
 				}
 			});
 			rRTTrack.play();
 		}
 
 		/* Requests access to the critical section */
-		public void requestCriticalSection(String object) {
-
+		public void requestCriticalSection(MessageQueue sender, MessageQueue receiver1, MessageQueue receiver2, MessageQueue receiver3) {
+			sender.sendMessage(sender, new Timestamp(System.currentTimeMillis()), 0);
+			sender.sendMessage(receiver1, new Timestamp(System.currentTimeMillis()), 0);
+			sender.sendMessage(receiver2, new Timestamp(System.currentTimeMillis()), 0);
+			sender.sendMessage(receiver3, new Timestamp(System.currentTimeMillis()), 0);
 		}
 	}
 }
