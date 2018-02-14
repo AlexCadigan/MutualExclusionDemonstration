@@ -20,6 +20,7 @@ import javafx.scene.shape.LineTo;
 import javafx.scene.shape.VLineTo;
 import javafx.scene.shape.MoveTo;
 import javafx.scene.shape.Path;
+import javafx.scene.shape.Polygon;
 import javafx.scene.shape.QuadCurveTo;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Modality;
@@ -136,97 +137,159 @@ public class MutualExclusionDemonstration extends Application
 			startSimulation(objectSpeeds);
 		}
 
-		/*
-		* Begins the simulation
-		*/
-		private void startSimulation(double [] objectSpeeds)
-		{
+		/* Begins the simulation */
+		private void startSimulation(double [] objectSpeeds) {
 			// Creates the GUI window
 			Stage animationStage = new Stage();
 			animationStage.initModality(Modality.APPLICATION_MODAL);
 			animationStage.setTitle("Mutual Exclusion Simulation");
 			animationStage.setResizable(false);
+
 			// Creates the moving objects (circle, square, triangle, rhombus)
 			Group objects = new Group();
 			Circle circle = new Circle(10, Color.RED);
 			Rectangle square = new Rectangle(15, 15, Color.BLUE);
+ 			Polygon triangle = new Polygon();
+ 			triangle.setFill(Color.YELLOW);
+        	triangle.getPoints().addAll(new Double[] { 0.0, 0.0, 20.0, 10.0, 10.0, 20.0 });
+        	Polygon rhombus = new Polygon();
+        	rhombus.setFill(Color.GREEN);
+        	rhombus.getPoints().addAll(new Double[] { 0.0, 0.0, -10.0, 10.0, 0.0, 20.0, 10.0, 10.0 });
 			objects.getChildren().add(circle);
 			objects.getChildren().add(square);
-			// Path for circle
-			Path circlePath = new Path();
-			MoveTo circleMoveTo = new MoveTo();
-			circleMoveTo.setX(100.0f);
-			circleMoveTo.setY(400.0f);
-			LineTo circleLeftVLine = new LineTo();
-			circleLeftVLine.setX(100.0f);
-			circleLeftVLine.setY(100.0f);
-			LineTo circleLeftUpperLine = new LineTo();
-			circleLeftUpperLine.setX(250.0f);
-			circleLeftUpperLine.setY(250.0f);
-			LineTo circleLeftCriticalSection = new LineTo();
-			circleLeftCriticalSection.setX(650.0f);
-			circleLeftCriticalSection.setY(250.0f);
-			LineTo circleRightUpperLine = new LineTo();
-			circleRightUpperLine.setX(800.0f);
-			circleRightUpperLine.setY(100.0f);
-			LineTo circleRightVLine = new LineTo();
-			circleRightVLine.setX(800.0f);
-			circleRightVLine.setY(400.0f);
-			LineTo circleRightLowerLine = new LineTo();
-			circleRightLowerLine.setX(650.0f);
-			circleRightLowerLine.setY(250.0f);
-			LineTo circleRightCriticalSection = new LineTo();
-			circleRightCriticalSection.setX(250.0f);
-			circleRightCriticalSection.setY(250.0f);
-			LineTo circleLeftLowerLine = new LineTo();
-			circleLeftLowerLine.setX(100.0f);
-			circleLeftLowerLine.setY(400.0f);
-			circlePath.getElements().add(circleMoveTo);
-			circlePath.getElements().add(circleLeftVLine);
-			circlePath.getElements().add(circleLeftUpperLine);
-			circlePath.getElements().add(circleLeftCriticalSection);
-			circlePath.getElements().add(circleRightUpperLine);
-			circlePath.getElements().add(circleRightVLine);
-			circlePath.getElements().add(circleRightLowerLine);
-			circlePath.getElements().add(circleRightCriticalSection);
-			circlePath.getElements().add(circleLeftLowerLine);
-			objects.getChildren().add(circlePath);
+			objects.getChildren().add(triangle);
+			objects.getChildren().add(rhombus);
 
-			// Path for square
-			Path squarePath = new Path();
-			MoveTo squareMoveTo = new MoveTo();
-			squareMoveTo.setX(100.0f);
-			squareMoveTo.setY(100.0f);
-			LineTo squareLeftUpperLine = new LineTo();
-			squareLeftUpperLine.setX(250.0f);
-			squareLeftUpperLine.setY(250.0f);
-			LineTo squareLeftCriticalSection = new LineTo();
-			squareLeftCriticalSection.setX(650.0f);
-			squareLeftCriticalSection.setY(250.0f);
-			LineTo squareRightUpperLine = new LineTo();
-			squareRightUpperLine.setX(800.0f);
-			squareRightUpperLine.setY(100.0f);
-			LineTo squareRightVLine = new LineTo();
-			squareRightVLine.setX(800.0f);
-			squareRightVLine.setY(400.0f);
-			squarePath.getElements().add(squareMoveTo);
-			squarePath.getElements().add(squareLeftUpperLine);
-			squarePath.getElements().add(squareLeftCriticalSection);
-			squarePath.getElements().add(squareRightUpperLine);
-			squarePath.getElements().add(squareRightVLine);
-			objects.getChildren().add(squarePath);
+			// Left triangle path for circle
+			MoveTo cLTMoveTo = new MoveTo();
+			cLTMoveTo.setX(250.0f);
+			cLTMoveTo.setY(250.0f);
+			LineTo cLLowerLine = new LineTo();
+			cLLowerLine.setX(100.0f);
+			cLLowerLine.setY(400.0f);
+			LineTo cLVLine = new LineTo();
+			cLVLine.setX(100.0f);
+			cLVLine.setY(100.0f);
+			LineTo cLUpperLine = new LineTo();
+			cLUpperLine.setX(250.0f);
+			cLUpperLine.setY(250.0f);
+			Path cLTriangle = new Path();
+			cLTriangle.setStroke(Color.BLACK);
+			cLTriangle.getElements().add(cLTMoveTo);
+			cLTriangle.getElements().add(cLLowerLine);
+			cLTriangle.getElements().add(cLVLine);
+			cLTriangle.getElements().add(cLUpperLine);
+			objects.getChildren().add(cLTriangle);
+
+			// Left triangle path for square
+			MoveTo sLTMoveTo = new MoveTo();
+			sLTMoveTo.setX(250.0f);
+			sLTMoveTo.setY(250.0f);
+			LineTo sLUpperLine = new LineTo();
+			sLUpperLine.setX(100.0f);
+			sLUpperLine.setY(100.0f);
+			LineTo sLVLine = new LineTo();
+			sLVLine.setX(100.0f);
+			sLVLine.setY(400.0f);
+			LineTo sLLowerLine = new LineTo();
+			sLLowerLine.setX(250.0f);
+			sLLowerLine.setY(250.0f);
+			Path sLTriangle = new Path();
+			sLTriangle.setStroke(Color.BLACK);
+			sLTriangle.getElements().add(sLTMoveTo);
+			sLTriangle.getElements().add(sLUpperLine);
+			sLTriangle.getElements().add(sLVLine);
+			sLTriangle.getElements().add(sLLowerLine);
+			objects.getChildren().add(sLTriangle);
+
+			// Right triangle path for triangle
+			MoveTo tRTMoveTo = new MoveTo();
+			tRTMoveTo.setX(800.0f);
+			tRTMoveTo.setY(250.0f);
+			LineTo tRUpperLine = new LineTo();
+			tRUpperLine.setX(950.0f);
+			tRUpperLine.setY(100.0f);
+			LineTo tRVLine = new LineTo();
+			tRVLine.setX(950.0f);
+			tRVLine.setY(400.0f);
+			LineTo tRLowerLine = new LineTo();
+			tRLowerLine.setX(800.0f);
+			tRLowerLine.setY(250.0f);
+			Path tRTriangle = new Path();
+			tRTriangle.setStroke(Color.BLACK);
+			tRTriangle.getElements().add(tRTMoveTo);
+			tRTriangle.getElements().add(tRUpperLine);
+			tRTriangle.getElements().add(tRVLine);
+			tRTriangle.getElements().add(tRLowerLine);
+			objects.getChildren().add(tRTriangle);
+
+			// Right triangle path for rhombus
+			MoveTo rRTMoveTo = new MoveTo();
+			rRTMoveTo.setX(800.0f);
+			rRTMoveTo.setY(250.0f);
+			LineTo rRLowerLine = new LineTo();
+			rRLowerLine.setX(950.0f);
+			rRLowerLine.setY(400.0f);
+			LineTo rRVLine = new LineTo();
+			rRVLine.setX(950.0f);
+			rRVLine.setY(100.0f);
+			LineTo rRUpperLine = new LineTo();
+			rRUpperLine.setX(800.0f);
+			rRUpperLine.setY(250.0f);
+			Path rRTriangle = new Path();
+			rRTriangle.setStroke(Color.BLACK);
+			rRTriangle.getElements().add(rRTMoveTo);
+			rRTriangle.getElements().add(rRLowerLine);
+			rRTriangle.getElements().add(rRVLine);
+			rRTriangle.getElements().add(rRUpperLine);
+			objects.getChildren().add(rRTriangle);
 
 			// Displays the path and objects
-			Scene animationScene = new Scene(objects, 1000, 500);
+			Scene animationScene = new Scene(objects, 1050, 500);
 			animationStage.setScene(animationScene);
 			animationStage.show();
+
+			// Creates message queue objects
+			
+
 			// Starts the animations
-			PathTransition circleTrack = new PathTransition(Duration.millis(objectSpeeds[0] * 1000), circlePath, circle);
-			circleTrack.setCycleCount(Animation.INDEFINITE);
-			circleTrack.play();
-			PathTransition squareTrack = new PathTransition(Duration.millis(objectSpeeds[2] * 1000), squarePath, square);
-			squareTrack.setCycleCount(Animation.INDEFINITE);
-			squareTrack.play();
+			PathTransition cLTTrack = new PathTransition(Duration.millis(objectSpeeds[0] * 1000), cLTriangle, circle);
+			cLTTrack.setOnFinished(new EventHandler <ActionEvent> () {
+				@Override
+				public void handle (ActionEvent event) {
+					requestCriticalSection("circle");
+				}
+			});
+			cLTTrack.play();
+			PathTransition tRTTrack = new PathTransition(Duration.millis(objectSpeeds[1] * 1000), tRTriangle, triangle);
+			tRTTrack.setOnFinished(new EventHandler <ActionEvent> () {
+				@Override
+				public void handle (ActionEvent event) {
+					requestCriticalSection("triangle");
+				}
+			});
+			tRTTrack.play();
+			PathTransition sLTTrack = new PathTransition(Duration.millis(objectSpeeds[2] * 1000), sLTriangle, square);
+			sLTTrack.setOnFinished(new EventHandler <ActionEvent> () {
+				@Override
+				public void handle (ActionEvent event) {
+					requestCriticalSection("square");
+				}
+			});
+			sLTTrack.play();
+			PathTransition rRTTrack = new PathTransition(Duration.millis(objectSpeeds[3] * 1000), rRTriangle, rhombus);
+			rRTTrack.setOnFinished(new EventHandler <ActionEvent> () {
+				@Override
+				public void handle (ActionEvent event) {
+					requestCriticalSection("rhombus");
+				}
+			});
+			rRTTrack.play();
+		}
+
+		/* Requests access to the critical section */
+		public void requestCriticalSection(String object) {
+
 		}
 	}
 }
