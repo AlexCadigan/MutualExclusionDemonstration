@@ -1,3 +1,6 @@
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.sql.Timestamp;
 import javafx.animation.Animation;
 import javafx.animation.PathTransition;
@@ -256,47 +259,52 @@ public class MutualExclusionDemonstration extends Application
 			MessageQueue sQueue = new MessageQueue("square");
 			MessageQueue rQueue = new MessageQueue("rhombus");
 
-			// Starts the animations
-			PathTransition cLTTrack = new PathTransition(Duration.millis(objectSpeeds[0] * 1000), cLTriangle, circle);
-			cLTTrack.setOnFinished(new EventHandler <ActionEvent> () {
-				@Override
-				public void handle (ActionEvent event) {
-					requestCriticalSection(cQueue, tQueue, sQueue, rQueue);
-				}
-			});
-			cLTTrack.play();
-			PathTransition tRTTrack = new PathTransition(Duration.millis(objectSpeeds[1] * 1000), tRTriangle, triangle);
-			tRTTrack.setOnFinished(new EventHandler <ActionEvent> () {
-				@Override
-				public void handle (ActionEvent event) {
-					requestCriticalSection(tQueue, cQueue, sQueue, rQueue);
-				}
-			});
-			tRTTrack.play();
-			PathTransition sLTTrack = new PathTransition(Duration.millis(objectSpeeds[2] * 1000), sLTriangle, square);
-			sLTTrack.setOnFinished(new EventHandler <ActionEvent> () {
-				@Override
-				public void handle (ActionEvent event) {
-					requestCriticalSection(sQueue, cQueue, tQueue, rQueue);
-				}
-			});
-			sLTTrack.play();
-			PathTransition rRTTrack = new PathTransition(Duration.millis(objectSpeeds[3] * 1000), rRTriangle, rhombus);
-			rRTTrack.setOnFinished(new EventHandler <ActionEvent> () {
-				@Override
-				public void handle (ActionEvent event) {
-					requestCriticalSection(rQueue, cQueue, tQueue, sQueue);
-				}
-			});
-			rRTTrack.play();
+			try (PrintWriter writer = new PrintWriter(new FileWriter("../logs/Log.txt"))) { 
+				// Starts the animations
+				PathTransition cLTTrack = new PathTransition(Duration.millis(objectSpeeds[0] * 1000), cLTriangle, circle);
+				cLTTrack.setOnFinished(new EventHandler <ActionEvent> () {
+					@Override
+					public void handle (ActionEvent event) {
+						requestCriticalSection(writer, cQueue, tQueue, sQueue, rQueue);
+					}
+				});
+				cLTTrack.play();
+				PathTransition tRTTrack = new PathTransition(Duration.millis(objectSpeeds[1] * 1000), tRTriangle, triangle);
+				tRTTrack.setOnFinished(new EventHandler <ActionEvent> () {
+					@Override
+					public void handle (ActionEvent event) {
+						requestCriticalSection(writer, tQueue, cQueue, sQueue, rQueue);
+					}
+				});
+				tRTTrack.play();
+				PathTransition sLTTrack = new PathTransition(Duration.millis(objectSpeeds[2] * 1000), sLTriangle, square);
+				sLTTrack.setOnFinished(new EventHandler <ActionEvent> () {
+					@Override
+					public void handle (ActionEvent event) {
+						requestCriticalSection(writer, sQueue, cQueue, tQueue, rQueue);
+					}
+				});
+				sLTTrack.play();
+				PathTransition rRTTrack = new PathTransition(Duration.millis(objectSpeeds[3] * 1000), rRTriangle, rhombus);
+				rRTTrack.setOnFinished(new EventHandler <ActionEvent> () {
+					@Override
+					public void handle (ActionEvent event) {
+						requestCriticalSection(writer, rQueue, cQueue, tQueue, sQueue);
+					}
+				});
+				rRTTrack.play();
+			}
+			catch (IOException exception) {
+				System.out.println("No file found");
+			}
 		}
 
 		/* Requests access to the critical section */
-		public void requestCriticalSection(MessageQueue sender, MessageQueue receiver1, MessageQueue receiver2, MessageQueue receiver3) {
-			sender.sendMessage(sender, new Timestamp(System.currentTimeMillis()), 0);
-			sender.sendMessage(receiver1, new Timestamp(System.currentTimeMillis()), 0);
-			sender.sendMessage(receiver2, new Timestamp(System.currentTimeMillis()), 0);
-			sender.sendMessage(receiver3, new Timestamp(System.currentTimeMillis()), 0);
+		public void requestCriticalSection(PrintWriter writer, MessageQueue sender, MessageQueue receiver1, MessageQueue receiver2, MessageQueue receiver3) {
+			sender.sendMessage(writer, sender, new Timestamp(System.currentTimeMillis()), 0);
+			sender.sendMessage(writer, receiver1, new Timestamp(System.currentTimeMillis()), 0);
+			sender.sendMessage(writer, receiver2, new Timestamp(System.currentTimeMillis()), 0);
+			sender.sendMessage(writer, receiver3, new Timestamp(System.currentTimeMillis()), 0);
 		}
 	}
 }
