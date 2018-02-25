@@ -3,6 +3,7 @@ ProjectWriteUp.aux
 ProjectWriteUp.log
 ProjectWriteUp.pdf
 ProjectWriteUp.synctex.gz
-
 # Java class files
 src/*.class
+# The log from the simulation
+logs/Log.txt
