@@ -1,3 +1,4 @@
+/*
 MIT License
 
 Copyright (c) 2018 Alex Cadigan, Jacob Naranjo, Tanush Samson
@@ -19,3 +20,22 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
+*/
+import java.util.ArrayList;
+/* Stores all of the messages from the simulation */
+public class MessageQueue {
+	private ArrayList<ArrayList<String>> queue = new ArrayList<ArrayList<String>>();
+	/* Gets the message queue */
+	public ArrayList<ArrayList<String>> getQueue() {
+		return this.queue;
+	}
+	/* Logs the given message in the queue */
+	public void logMessage(String receiver, String sender, String timestamp, String message) {
+		ArrayList<String> newMessage = new ArrayList<String>();
+		newMessage.add(receiver);
+		newMessage.add(sender);
+		newMessage.add(timestamp);
+		newMessage.add(message);
+		this.queue.add(newMessage);
+	}
+}
