@@ -6,4 +6,4 @@ ProjectWriteUp.synctex.gz
 # Java class files
 src/*.class
 # The log files
-*.txt
+logs/*.txt
