@@ -23,5 +23,8 @@ SOFTWARE.
 */
 /* Creates an object that acts as a process in the mutual exclusion demonstration */
 public class Object {
-
+	/* Determines if the object can enter the critical section */
+	public boolean enterCriticalSection() {
+		return false;
+	}
 }	

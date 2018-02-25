@@ -191,56 +191,25 @@ public class Simulation implements EventHandler<ActionEvent> {
 		animationStage.setScene(animationScene);
 		animationStage.show();	
 		// Begins running the simulation
-		this.runSimulation(this.objectSpeeds, circle, square, triangle, rhombus, lLTriangle, lUTriangle, rLTriangle, rUTriangle, lCSPath, rCSPath);
+		Object [] processes = new Object [] {new Object(), new Object(), new Object(), new Object()};
+		this.runSimulation(processes, this.objectSpeeds, circle, square, triangle, rhombus, lLTriangle, lUTriangle, rLTriangle, rUTriangle, lCSPath, rCSPath);
 	}
 	/* Runs the simulation */
-	private void runSimulation(double [] objectSpeeds, Circle circle, Rectangle square, Polygon triangle, Polygon rhombus, Path lLTriangle, Path lUTriangle, Path rLTriangle, Path rUTriangle, Path lCSPath, Path rCSPath) {
+	private void runSimulation(Object [] processes, double [] objectSpeeds, Circle circle, Rectangle square, Polygon triangle, Polygon rhombus, Path lLTriangle, Path lUTriangle, Path rLTriangle, Path rUTriangle, Path lCSPath, Path rCSPath) {
+		// Starts animations for each object
 		PathTransition cLTTrack = new PathTransition(Duration.millis(objectSpeeds[0] * 1000), lLTriangle, circle);
 		cLTTrack.setOnFinished(new EventHandler <ActionEvent> () {
 			@Override
 			public void handle (ActionEvent event) {
-				PathTransition cCSLTrack = new PathTransition(Duration.millis(objectSpeeds[0] * 1000), lCSPath, circle);
-				cCSLTrack.setOnFinished(new EventHandler <ActionEvent> () {
-					@Override
-					public void handle (ActionEvent event) {
-						PathTransition cRTTrack = new PathTransition(Duration.millis(objectSpeeds[0] * 1000), rUTriangle, circle);
-						cRTTrack.setOnFinished(new EventHandler <ActionEvent> () {
-							@Override
-							public void handle (ActionEvent event) {
-								PathTransition cCSRTrack = new PathTransition(Duration.millis(objectSpeeds[0] * 1000), rCSPath, circle);
-								cCSRTrack.play();
-							}
-						});
-						cRTTrack.play();
-					}
-				});
-				cCSLTrack.play();
+				if (processes[0].enterCriticalSection()) {
+					// Begin cricial section movement
+				}
+				else {
+					cLTTrack.play();
+				}
 			}
 		});
 		cLTTrack.play();
-		PathTransition sLTTrack = new PathTransition(Duration.millis(objectSpeeds[1] * 1000), lUTriangle, square);
-		sLTTrack.setOnFinished(new EventHandler <ActionEvent> () {
-			@Override
-			public void handle (ActionEvent event) {
-				PathTransition sCSLTrack = new PathTransition(Duration.millis(objectSpeeds[1] * 1000), lCSPath, square);
-				sCSLTrack.setOnFinished(new EventHandler <ActionEvent> () {
-					@Override
-					public void handle (ActionEvent event) {
-						PathTransition sRTTrack = new PathTransition(Duration.millis(objectSpeeds[1] * 1000), rLTriangle, square);
-						sRTTrack.setOnFinished(new EventHandler <ActionEvent> () {
-							@Override
-							public void handle (ActionEvent event) {
-								PathTransition sCSRTrack = new PathTransition(Duration.millis(objectSpeeds[1] * 1000), rCSPath, square);
-								sCSRTrack.play();
-							}
-						});
-						sRTTrack.play();
-					}
-				});
-				sCSLTrack.play();
-			}
-		});
-		sLTTrack.play();
 		// Creates the objects for message passing
 		// Begins the simulations
 		// Check if objects want to enter critical section
