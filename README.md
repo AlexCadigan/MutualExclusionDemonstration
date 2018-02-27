@@ -15,6 +15,7 @@ A simulation to demonstrate mutual exclusion in distributed systems
 * [Jacob Naranjo](https://github.com/jacobnaran)
 * [Tanush Samson](https://github.com/Tanflare)
 * [Alex Cadigan](https://github.com/AlexCadigan)
+* [Lionel Niyongabire](https://github.com/lioniyon)
 
 ## License
 This software is licensed under the [MIT License](LICENSE)
