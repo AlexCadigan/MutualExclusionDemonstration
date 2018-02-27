@@ -1,7 +1,7 @@
 /*
 MIT License
 
-Copyright (c) 2018 Alex Cadigan, Jacob Naranjo, Tanush Samson
+Copyright (c) 2018 Alex Cadigan, Jacob Naranjo, Tanush Samson, Lionel Niyongabire
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -21,17 +21,12 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
-import java.io.File;
 import java.io.PrintWriter;
-import java.util.ArrayList;
 import javafx.animation.PathTransition;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
-import javafx.geometry.Pos;
-import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.scene.Group;
-import javafx.scene.layout.HBox;
 import javafx.scene.paint.Color;
 import javafx.scene.Scene;
 import javafx.scene.shape.Circle;
@@ -42,14 +37,11 @@ import javafx.scene.shape.Polygon;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
-import javafx.stage.WindowEvent;
 import javafx.util.Duration;
 /* Begins the simulation */
 public class Simulation implements EventHandler<ActionEvent> {
 	private TextField [] textFields;
 	private double [] objectSpeeds = new double [4];
-	private MessageQueue messageQueue = new MessageQueue();
-	private Object [] processes = new Object [] {new Object("circle", messageQueue), new Object("square", messageQueue), new Object("triangle", messageQueue), new Object("rhombus", messageQueue)};
 	/* Initializes instance variables */
 	public Simulation(TextField [] textFields) {
 		this.textFields = textFields;
@@ -197,236 +189,26 @@ public class Simulation implements EventHandler<ActionEvent> {
 		objects.getChildren().add(rCSPath);
 		// Displays the path and objects
 		Scene animationScene = new Scene(objects, 1050, 500);
-		animationStage.setScene(animationScene);
-		animationStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
-         	public void handle(WindowEvent event) {
-              	endSimulation(messageQueue);
-          	}
-      	});     
+		animationStage.setScene(animationScene);   
 		animationStage.show();	
-		// Begins running the simulation
-		this.runSimulation(this.processes, this.objectSpeeds, circle, square, triangle, rhombus, lLTriangle, lUTriangle, rLTriangle, rUTriangle, lCSPath, rCSPath);
-	}
-	/* Runs the simulation */
-	private void runSimulation(Object [] processes, double [] objectSpeeds, Circle circle, Rectangle square, Polygon triangle, Polygon rhombus, Path lLTriangle, Path lUTriangle, Path rLTriangle, Path rUTriangle, Path lCSPath, Path rCSPath) {
-		// Starts animation for circle
-		PathTransition cLTTrack = new PathTransition(Duration.millis(objectSpeeds[0] * 1000), lLTriangle, circle);
-		cLTTrack.setOnFinished(new EventHandler<ActionEvent>() {
-			@Override
-			public void handle(ActionEvent event) {
-				processes[0].attemptEnterCriticalSection(processes);
-				if (processes[0].enterCS(processes)) {
-					processes[0].setInCS(true);
-					processes[0].setSentCSRequest(false);
-					processes[0].setNumberOfAcks(0);
-					PathTransition cLCSTrack = new PathTransition(Duration.millis(objectSpeeds[0] * 1000), lCSPath, circle);
-					cLCSTrack.setOnFinished(new EventHandler<ActionEvent>() {
-						@Override
-						public void handle(ActionEvent event) {
-							processes[0].leaveCS(processes);
-							PathTransition cRTTrack = new PathTransition(Duration.millis(objectSpeeds[0] * 1000), rUTriangle, circle);
-							cRTTrack.setOnFinished(new EventHandler<ActionEvent>() {
-								@Override
-								public void handle(ActionEvent event) {
-									processes[0].attemptEnterCriticalSection(processes);
-									if (processes[0].enterCS(processes)) {
-										processes[0].setInCS(true);
-										processes[0].setSentCSRequest(false);
-										processes[0].setNumberOfAcks(0);
-										PathTransition cRCSTrack = new PathTransition(Duration.millis(objectSpeeds[0] * 1000), rCSPath, circle);
-										cRCSTrack.setOnFinished(new EventHandler<ActionEvent>() {
-											@Override
-											public void handle(ActionEvent event) {
-												processes[0].leaveCS(processes);
-												cLTTrack.play();
-											}
-										});
-										cRCSTrack.play();
-									}
-									else {
-										cRTTrack.play();
-									}
-								}
-							});
-							cRTTrack.play();
-						}
-					});
-					cLCSTrack.play();
-				}
-				else {
-					cLTTrack.play();
-				}
-			}
-		});
-		cLTTrack.play();
-		// Starts animation for square
-		PathTransition sLTTrack = new PathTransition(Duration.millis(objectSpeeds[1] * 1000), lUTriangle, square);
-		sLTTrack.setOnFinished(new EventHandler<ActionEvent>() {
-			@Override
-			public void handle(ActionEvent event) {
-				processes[1].attemptEnterCriticalSection(processes);
-				if (processes[1].enterCS(processes)) {
-					processes[1].setInCS(true);
-					processes[1].setSentCSRequest(false);
-					processes[1].setNumberOfAcks(0);
-					PathTransition sLCSTrack = new PathTransition(Duration.millis(objectSpeeds[1] * 1000), lCSPath, square);
-					sLCSTrack.setOnFinished(new EventHandler<ActionEvent>() {
-						@Override
-						public void handle(ActionEvent event) {
-							processes[1].leaveCS(processes);
-							PathTransition sRTTrack = new PathTransition(Duration.millis(objectSpeeds[1] * 1000), rLTriangle, square);
-							sRTTrack.setOnFinished(new EventHandler<ActionEvent>() {
-								@Override
-								public void handle(ActionEvent event) {
-									processes[1].attemptEnterCriticalSection(processes);
-									if (processes[1].enterCS(processes)) {
-										processes[1].setInCS(true);
-										processes[1].setSentCSRequest(false);
-										processes[1].setNumberOfAcks(0);
-										PathTransition sRCSTrack = new PathTransition(Duration.millis(objectSpeeds[1] * 1000), rCSPath, square);
-										sRCSTrack.setOnFinished(new EventHandler<ActionEvent>() {
-											@Override
-											public void handle(ActionEvent event) {
-												processes[1].leaveCS(processes);
-												sLTTrack.play();
-											}
-										});
-										sRCSTrack.play();
-									}
-									else {
-										sRTTrack.play();
-									}
-								}
-							});
-							sRTTrack.play();
-						}
-					});
-					sLCSTrack.play();
-				}
-				else {
-					sLTTrack.play();
-				}
-			}
-		});
-		sLTTrack.play();
-		// Starts animation for triangle
-		PathTransition tRTTrack = new PathTransition(Duration.millis(objectSpeeds[2] * 1000), rUTriangle, triangle);
-		tRTTrack.setOnFinished(new EventHandler<ActionEvent>() {
-			@Override
-			public void handle(ActionEvent event) {
-				processes[2].attemptEnterCriticalSection(processes);
-				if (processes[2].enterCS(processes)) {
-					processes[2].setInCS(true);
-					processes[2].setSentCSRequest(false);
-					processes[2].setNumberOfAcks(0);
-					PathTransition tRCSTrack = new PathTransition(Duration.millis(objectSpeeds[2] * 1000), rCSPath, triangle);
-					tRCSTrack.setOnFinished(new EventHandler<ActionEvent>() {
-						@Override
-						public void handle(ActionEvent event) {
-							processes[2].leaveCS(processes);
-							PathTransition tLTTrack = new PathTransition(Duration.millis(objectSpeeds[2] * 1000), lLTriangle, triangle);
-							tLTTrack.setOnFinished(new EventHandler<ActionEvent>() {
-								@Override
-								public void handle(ActionEvent event) {
-									processes[2].attemptEnterCriticalSection(processes);
-									if (processes[2].enterCS(processes)) {
-										processes[2].setInCS(true);
-										processes[2].setSentCSRequest(false);
-										processes[2].setNumberOfAcks(0);
-										PathTransition tLCSTrack = new PathTransition(Duration.millis(objectSpeeds[2] * 1000), lCSPath, triangle);
-										tLCSTrack.setOnFinished(new EventHandler<ActionEvent>() {
-											@Override
-											public void handle(ActionEvent event) {
-												processes[2].leaveCS(processes);
-												tRTTrack.play();
-											}
-										});
-										tLCSTrack.play();
-									}
-									else {
-										tLTTrack.play();
-									}
-								}
-							});
-							tLTTrack.play();
-						}
-					});
-					tRCSTrack.play();
-				}
-				else {
-					tRTTrack.play();
-				}
-			}
-		});
-		tRTTrack.play();
-		// Starts animation for rhombus
-		PathTransition rRTTrack = new PathTransition(Duration.millis(objectSpeeds[3] * 1000), rLTriangle, rhombus);
-		rRTTrack.setOnFinished(new EventHandler<ActionEvent>() {
-			@Override
-			public void handle(ActionEvent event) {
-				processes[3].attemptEnterCriticalSection(processes);
-				if (processes[3].enterCS(processes)) {
-					processes[3].setInCS(true);
-					processes[3].setSentCSRequest(false);
-					processes[3].setNumberOfAcks(0);
-					PathTransition rRCSTrack = new PathTransition(Duration.millis(objectSpeeds[3] * 1000), rCSPath, rhombus);
-					rRCSTrack.setOnFinished(new EventHandler<ActionEvent>() {
-						@Override
-						public void handle(ActionEvent event) {
-							processes[3].leaveCS(processes);
-							PathTransition rLTTrack = new PathTransition(Duration.millis(objectSpeeds[3] * 1000), lUTriangle, rhombus);
-							rLTTrack.setOnFinished(new EventHandler<ActionEvent>() {
-								@Override
-								public void handle(ActionEvent event) {
-									processes[3].attemptEnterCriticalSection(processes);
-									if (processes[3].enterCS(processes)) {
-										processes[3].setInCS(true);
-										processes[3].setSentCSRequest(false);
-										processes[3].setNumberOfAcks(0);
-										PathTransition rLCSTrack = new PathTransition(Duration.millis(objectSpeeds[3] * 1000), lCSPath, rhombus);
-										rLCSTrack.setOnFinished(new EventHandler<ActionEvent>() {
-											@Override
-											public void handle(ActionEvent event) {
-												processes[3].leaveCS(processes);
-												rRTTrack.play();
-											}
-										});
-										rLCSTrack.play();
-									}
-									else {
-										rLTTrack.play();
-									}
-								}
-							});
-							rLTTrack.play();
-						}
-					});
-					rRCSTrack.play();
-				}
-				else {
-					rRTTrack.play();
-				}
-			}
-		});
-		rRTTrack.play();
-	}
-	/* Logs messages from simulation to file */
-	public void endSimulation(MessageQueue messageQueue) {
-		ArrayList<ArrayList<String>> allMessages = messageQueue.getQueue();
-		try (PrintWriter writer = new PrintWriter(new File("../logs/Log.txt"))) {
-			for (int index = 0; index < allMessages.size(); index ++) {
-				if (allMessages.get(index).get(1).equals("triangle")) {
-					writer.println("Receiver: " + allMessages.get(index).get(0) + "\tSender: " + allMessages.get(index).get(1) + "\tTimestamp: " + allMessages.get(index).get(2) + "\tMessage: " + allMessages.get(index).get(3));
-				}
-				else {
-					writer.println("Receiver: " + allMessages.get(index).get(0) + "\tSender: " + allMessages.get(index).get(1) + "\t\tTimestamp: " + allMessages.get(index).get(2) + "\tMessage: " + allMessages.get(index).get(3));
-				}
-			}
+		// Animation tracks
+		PathTransition [] cTrack = new PathTransition [] { new PathTransition(Duration.millis(objectSpeeds[0] * 1000), lLTriangle, circle), new PathTransition(Duration.millis(objectSpeeds[0] * 1000), lCSPath, circle), new PathTransition(Duration.millis(objectSpeeds[0] * 1000), rUTriangle, circle), new PathTransition(Duration.millis(objectSpeeds[0] * 1000), rCSPath, circle) };
+		PathTransition [] sTrack = new PathTransition [] { new PathTransition(Duration.millis(objectSpeeds[1] * 1000), lUTriangle, square), new PathTransition(Duration.millis(objectSpeeds[1] * 1000), lCSPath, square), new PathTransition(Duration.millis(objectSpeeds[1] * 1000), rLTriangle, square), new PathTransition(Duration.millis(objectSpeeds[1] * 1000), rCSPath, square) };
+		PathTransition [] tTrack = new PathTransition [] { new PathTransition(Duration.millis(objectSpeeds[2] * 1000), rLTriangle, triangle), new PathTransition(Duration.millis(objectSpeeds[2] * 1000), rCSPath, triangle), new PathTransition(Duration.millis(objectSpeeds[2] * 1000), lUTriangle, triangle), new PathTransition(Duration.millis(objectSpeeds[2] * 1000), lCSPath, triangle) };
+		PathTransition [] rTrack = new PathTransition [] { new PathTransition(Duration.millis(objectSpeeds[3] * 1000), rUTriangle, rhombus), new PathTransition(Duration.millis(objectSpeeds[3] * 1000), rCSPath, rhombus), new PathTransition(Duration.millis(objectSpeeds[3] * 1000), lLTriangle, rhombus), new PathTransition(Duration.millis(objectSpeeds[3] * 1000), lCSPath, rhombus) };
+		// Clears contents of log
+		try (PrintWriter writer = new PrintWriter("../logs/Log.txt")) {
 			writer.close();
 		}
 		catch (Exception exception) {
-			System.out.println("\nError writing to file!\n");
-			System.exit(0);
+			System.out.println("\nError clearing message log!\n");
+		}
+		// Processes
+		Process [] processes = new Process [] { new Process("circle", cTrack),  new Process("square", sTrack), new Process("triangle", tTrack), new Process("rhombus", rTrack) };
+		// Starts processes running
+		for (int index = 0; index < processes.length; index ++) {
+			processes[index].storeProcesses(processes);
+			processes[index].start();
 		}
 	}
 }
