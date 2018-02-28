@@ -199,7 +199,7 @@ public class Process {
 	}
 	/* Logs a message to a file */
 	private void logMessage(String receiver, String sender, String timestamp, String message) {
-		try (PrintWriter writer = new PrintWriter(new BufferedWriter(new FileWriter("../logs/Log.txt", true)))) {
+		try (PrintWriter writer = new PrintWriter(new BufferedWriter(new FileWriter("../logs/MessageLog.txt", true)))) {
 			if (sender.equals("triangle")) {
 				writer.println("Receiver: " + receiver + "\tSender: " + sender + "\tTimestamp: " + timestamp + "\tMessage: " + message);
 			}
