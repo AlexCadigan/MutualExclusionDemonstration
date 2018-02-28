@@ -1,1 +1,22 @@
-
+Receiver: triangle	Sender: circle		Timestamp: 2018-02-27 23:07:48.185	Message: acknowledging CS request
+Receiver: circle	Sender: circle		Timestamp: 2018-02-27 23:07:48.194	Message: leaving CS
+Receiver: square	Sender: circle		Timestamp: 2018-02-27 23:07:48.195	Message: leaving CS
+Receiver: triangle	Sender: circle		Timestamp: 2018-02-27 23:07:48.195	Message: leaving CS
+Receiver: rhombus	Sender: circle		Timestamp: 2018-02-27 23:07:48.195	Message: leaving CS
+Receiver: circle	Sender: rhombus		Timestamp: 2018-02-27 23:07:48.202	Message: requesting access to CS
+Receiver: rhombus	Sender: circle		Timestamp: 2018-02-27 23:07:48.203	Message: acknowledging CS request
+Receiver: square	Sender: rhombus		Timestamp: 2018-02-27 23:07:48.203	Message: requesting access to CS
+Receiver: triangle	Sender: rhombus		Timestamp: 2018-02-27 23:07:48.203	Message: requesting access to CS
+Receiver: rhombus	Sender: triangle	Timestamp: 2018-02-27 23:07:48.204	Message: acknowledging CS request
+Receiver: rhombus	Sender: rhombus		Timestamp: 2018-02-27 23:07:48.204	Message: requesting access to CS
+Receiver: rhombus	Sender: square		Timestamp: 2018-02-27 23:07:58.195	Message: acknowledging CS request
+Receiver: circle	Sender: square		Timestamp: 2018-02-27 23:07:58.204	Message: leaving CS
+Receiver: square	Sender: square		Timestamp: 2018-02-27 23:07:58.205	Message: leaving CS
+Receiver: triangle	Sender: square		Timestamp: 2018-02-27 23:07:58.205	Message: leaving CS
+Receiver: rhombus	Sender: square		Timestamp: 2018-02-27 23:07:58.205	Message: leaving CS
+Receiver: circle	Sender: circle		Timestamp: 2018-02-27 23:07:58.211	Message: requesting access to CS
+Receiver: square	Sender: circle		Timestamp: 2018-02-27 23:07:58.212	Message: requesting access to CS
+Receiver: circle	Sender: square		Timestamp: 2018-02-27 23:07:58.212	Message: acknowledging CS request
+Receiver: triangle	Sender: circle		Timestamp: 2018-02-27 23:07:58.213	Message: requesting access to CS
+Receiver: rhombus	Sender: circle		Timestamp: 2018-02-27 23:07:58.213	Message: requesting access to CS
+Receiver: circle	Sender: rhombus		Timestamp: 2018-02-27 23:07:58.213	Message: acknowledging CS request
