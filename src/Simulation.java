@@ -174,7 +174,7 @@ public class Simulation implements EventHandler<ActionEvent> {
 		PathTransition [] tTrack = new PathTransition [] { new PathTransition(Duration.millis(objectSpeeds[2] * 1000), rLTriangle, triangle), new PathTransition(Duration.millis(objectSpeeds[2] * 1000), rCSPath, triangle), new PathTransition(Duration.millis(objectSpeeds[2] * 1000), lUTriangle, triangle), new PathTransition(Duration.millis(objectSpeeds[2] * 1000), lCSPath, triangle) };
 		PathTransition [] rTrack = new PathTransition [] { new PathTransition(Duration.millis(objectSpeeds[3] * 1000), rUTriangle, rhombus), new PathTransition(Duration.millis(objectSpeeds[3] * 1000), rCSPath, rhombus), new PathTransition(Duration.millis(objectSpeeds[3] * 1000), lLTriangle, rhombus), new PathTransition(Duration.millis(objectSpeeds[3] * 1000), lCSPath, rhombus) };
 		// Clears contents of log
-		try (PrintWriter writer = new PrintWriter("../logs/MessageLog.txt")) {
+		try (PrintWriter writer = new PrintWriter("../logs/Log.txt")) {
 			writer.close();
 		}
 		catch (Exception exception) {
