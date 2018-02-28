@@ -129,20 +129,8 @@ public class Process {
 	}
 	/* Checks if this process is able to enter the CS */
 	private boolean canEnterCS() {
-		// System.out.println("\n" + this.shape);
-		// for (int index = 0; index < this.messageQueue.size(); index ++) {
-		// 	if (this.messageQueue.get(index).get(0).equals("triangle")) {
-		// 		System.out.println("Sender: " + this.messageQueue.get(index).get(0) + "\tTimestamp: " + this.messageQueue.get(index).get(1) + "\tMessage: " + this.messageQueue.get(index).get(2));
-		// 	}
-		// 	else {
-		// 		System.out.println("Sender: " + this.messageQueue.get(index).get(0) + "\t\tTimestamp: " + this.messageQueue.get(index).get(1) + "\tMessage: " + this.messageQueue.get(index).get(2));
-		// 	}
-		// }
 		ArrayList<String> oldestMessage = this.getOldestMessage();
 		if (oldestMessage != null) {
-			System.out.println("\n" + this.shape);
-			System.out.println(oldestMessage.get(0).equals(this.shape));
-			System.out.println(this.numberOfAcks);
 			if (oldestMessage.get(0).equals(this.shape) && this.numberOfAcks == 3) {
 				return true;
 			}
@@ -156,10 +144,7 @@ public class Process {
 		}
 		else {
 			ArrayList<String> oldest = this.messageQueue.get(0);
-			// System.out.println("\n" + this.shape + "\n");
 			for (int index = 1; index < this.messageQueue.size(); index ++) {
-				// System.out.println("Oldest: " + oldest.toString() + "\t\tCurrent: " + this.messageQueue.get(index).toString());
-				// System.out.println(oldest.get(1).compareTo(this.messageQueue.get(index).get(1)));
 				if (oldest.get(1).compareTo(this.messageQueue.get(index).get(1)) > 0) {
 					oldest = this.messageQueue.get(index);
 				}
