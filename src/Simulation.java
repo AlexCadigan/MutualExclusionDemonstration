@@ -79,10 +79,6 @@ public class Simulation implements EventHandler<ActionEvent> {
     	Polygon rhombus = new Polygon();
     	rhombus.setFill(Color.GREEN);
     	rhombus.getPoints().addAll(new Double[] { 0.0, 0.0, -10.0, 10.0, 0.0, 20.0, 10.0, 10.0 });
-		objects.getChildren().add(circle);
-		objects.getChildren().add(square);
-		objects.getChildren().add(triangle);
-		objects.getChildren().add(rhombus);
 		// Left lower triangle
 		MoveTo lLTMoveTo = new MoveTo();
 		lLTMoveTo.setX(250.0f);
@@ -98,11 +94,7 @@ public class Simulation implements EventHandler<ActionEvent> {
 		lLTUpperLine.setY(250.0f);
 		Path lLTriangle = new Path();
 		lLTriangle.setStroke(Color.BLACK);
-		lLTriangle.getElements().add(lLTMoveTo);
-		lLTriangle.getElements().add(lLTLowerLine);
-		lLTriangle.getElements().add(lLTVLine);
-		lLTriangle.getElements().add(lLTUpperLine);
-		objects.getChildren().add(lLTriangle);
+		lLTriangle.getElements().addAll(lLTMoveTo, lLTLowerLine, lLTVLine, lLTUpperLine);
 		// Left upper triangle
 		MoveTo lUTMoveTo = new MoveTo();
 		lUTMoveTo.setX(250.0f);
@@ -118,11 +110,7 @@ public class Simulation implements EventHandler<ActionEvent> {
 		lUTLowerLine.setY(250.0f);
 		Path lUTriangle = new Path();
 		lUTriangle.setStroke(Color.BLACK);
-		lUTriangle.getElements().add(lUTMoveTo);
-		lUTriangle.getElements().add(lUTUpperLine);
-		lUTriangle.getElements().add(lUTVLine);
-		lUTriangle.getElements().add(lUTLowerLine);
-		objects.getChildren().add(lUTriangle);
+		lUTriangle.getElements().addAll(lUTMoveTo, lUTUpperLine, lUTVLine, lUTLowerLine);
 		// Right lower triangle
 		MoveTo rLTMoveTo = new MoveTo();
 		rLTMoveTo.setX(800.0f);
@@ -138,11 +126,7 @@ public class Simulation implements EventHandler<ActionEvent> {
 		rLTUpperLine.setY(250.0f);
 		Path rLTriangle = new Path();
 		rLTriangle.setStroke(Color.BLACK);
-		rLTriangle.getElements().add(rLTMoveTo);
-		rLTriangle.getElements().add(rLTLowerLine);
-		rLTriangle.getElements().add(rLTVLine);
-		rLTriangle.getElements().add(rLTUpperLine);
-		objects.getChildren().add(rLTriangle);
+		rLTriangle.getElements().addAll(rLTMoveTo, rLTLowerLine, rLTVLine, rLTUpperLine);
 		// Right upper triangle
 		MoveTo rUTMoveTo = new MoveTo();
 		rUTMoveTo.setX(800.0f);
@@ -158,11 +142,7 @@ public class Simulation implements EventHandler<ActionEvent> {
 		rUTLowerLine.setY(250.0f);
 		Path rUTriangle = new Path();
 		rUTriangle.setStroke(Color.BLACK);
-		rUTriangle.getElements().add(rUTMoveTo);
-		rUTriangle.getElements().add(rUTUpperLine);
-		rUTriangle.getElements().add(rUTVLine);
-		rUTriangle.getElements().add(rUTLowerLine);
-		objects.getChildren().add(rUTriangle);
+		rUTriangle.getElements().addAll(rUTMoveTo, rUTUpperLine, rUTVLine, rUTLowerLine);
 		// Left critical section
 		MoveTo lCSMoveTo = new MoveTo();
 		lCSMoveTo.setX(250.0f);
@@ -172,9 +152,7 @@ public class Simulation implements EventHandler<ActionEvent> {
 		lCSLine.setY(250.0f);
 		Path lCSPath = new Path();
 		lCSPath.setStroke(Color.RED);
-		lCSPath.getElements().add(lCSMoveTo);
-		lCSPath.getElements().add(lCSLine);
-		objects.getChildren().add(lCSPath);
+		lCSPath.getElements().addAll(lCSMoveTo, lCSLine);
 		// Right critical section
 		MoveTo rCSMoveTo = new MoveTo();
 		rCSMoveTo.setX(800.0f);
@@ -184,9 +162,8 @@ public class Simulation implements EventHandler<ActionEvent> {
 		rCSLine.setY(250.0f);
 		Path rCSPath = new Path();
 		rCSPath.setStroke(Color.RED);
-		rCSPath.getElements().add(rCSMoveTo);
-		rCSPath.getElements().add(rCSLine);
-		objects.getChildren().add(rCSPath);
+		rCSPath.getElements().addAll(rCSMoveTo, rCSLine);
+		objects.getChildren().addAll(circle, square, triangle, rhombus, lLTriangle, lUTriangle, rLTriangle, rUTriangle, lCSPath, rCSPath);
 		// Displays the path and objects
 		Scene animationScene = new Scene(objects, 1050, 500);
 		animationStage.setScene(animationScene);   

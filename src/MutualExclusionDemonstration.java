@@ -42,30 +42,25 @@ public class MutualExclusionDemonstration extends Application {
 	public void start(Stage stage) {
 		stage.setTitle("Mutual Exclusion Demonstration");
 		// Object speed labels
-		Label lblInstructions = new Label("Note: objects move faster with lower speeds!");
 		HBox label0 = new HBox(10);
 		label0.setAlignment(Pos.CENTER);
-		label0.getChildren().addAll(lblInstructions);
-		Label lblCircle = new Label("Circle Speed:");
+		label0.getChildren().addAll(new Label("Note: objects move faster with lower speeds!"));
 		TextField txtCircle = new TextField("10");
 		HBox label1 = new HBox(10);
 		label1.setAlignment(Pos.CENTER);
-		label1.getChildren().addAll(lblCircle, txtCircle);
-		Label lblSquare = new Label("Square Speed:");
+		label1.getChildren().addAll(new Label("Circle Speed:"), txtCircle);
 		TextField txtSquare = new TextField("10");
 		HBox label2 = new HBox(10);
 		label2.setAlignment(Pos.CENTER);
-		label2.getChildren().addAll(lblSquare, txtSquare);
-		Label lblTriangle = new Label("Triangle Speed:");
+		label2.getChildren().addAll(new Label("Square Speed:"), txtSquare);
 		TextField txtTriangle = new TextField("10");
 		HBox label3 = new HBox(10);
 		label3.setAlignment(Pos.CENTER);
-		label3.getChildren().addAll(lblTriangle, txtTriangle);
-		Label lblRhombus = new Label("Rhombus Speed:");
+		label3.getChildren().addAll(new Label("Triangle Speed:"), txtTriangle);
 		TextField txtRhombus = new TextField("10");
 		HBox label4 = new HBox(10);
 		label4.setAlignment(Pos.CENTER);
-		label4.getChildren().addAll(lblRhombus, txtRhombus);
+		label4.getChildren().addAll(new Label("Rhombus Speed:"), txtRhombus);
 		// Start button
 		Button btnStart = new Button("Start Simulation");
 		btnStart.setOnAction(new Simulation(new TextField [] {txtCircle, txtSquare, txtTriangle, txtRhombus}));
@@ -76,8 +71,7 @@ public class MutualExclusionDemonstration extends Application {
 		VBox vbox = new VBox(40);
 		vbox.setPadding(new Insets(30, 30, 30, 30));
 		vbox.getChildren().addAll(label0, label1, label2, label3, label4, button);
-		Scene scene = new Scene(vbox, 450, 425);
-		stage.setScene(scene);
+		stage.setScene(new Scene(vbox, 450, 425));
 		stage.show();
 	}
 }
