@@ -3,6 +3,8 @@ ProjectWriteUp.aux
 ProjectWriteUp.log
 ProjectWriteUp.pdf
 ProjectWriteUp.synctex.gz
+ProjectWriteUp.out
+img
 # Java class files
 src/*.class
 # The log files
